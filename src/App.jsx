@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
+import { GardenProvider } from './context/GardenContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import Login from './pages/Login'
@@ -20,7 +21,7 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+          <Route element={<ProtectedRoute><GardenProvider><Layout /></GardenProvider></ProtectedRoute>}>
             <Route index element={<Dashboard />} />
             <Route path="beete" element={<Beete />} />
             <Route path="beete/:bedId" element={<BedDetail />} />
