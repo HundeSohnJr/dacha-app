@@ -6,7 +6,7 @@
 
 ## Overview
 
-Dacha App is a PWA for managing a 56m² allotment garden in Viernheim, Germany. It serves as a smart garden dashboard for a two-person household (Philipp and Nastia), providing sowing calendar automation, weather intelligence with frost alerts, bed management, harvest tracking, and task coordination — all driven by a rich seed library of 106+ varieties.
+Dacha App is a PWA for managing a 56m² allotment garden in Bürstadt, Germany. It serves as a smart garden dashboard for a two-person household (Philipp and Nastia), providing sowing calendar automation, weather intelligence with frost alerts, bed management, harvest tracking, and task coordination — all driven by a rich seed library of 106+ varieties.
 
 ## Users
 
