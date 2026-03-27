@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+:root {
+  --color-dacha-green: #22c55e;
+  --color-dacha-dark: #0f172a;
+  --color-dacha-card: #1e293b;
+}
+
+body {
+  @apply bg-slate-900 text-white min-h-screen;
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
