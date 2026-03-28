@@ -15,7 +15,10 @@ export default function Dashboard() {
   const { user } = useAuth()
   const currentKW = getKW()
 
-  const openTasks = tasks.filter((t) => !t.completed && t.dueKW === currentKW)
+  const openTasks = tasks.filter((t) =>
+    !t.completed && t.dueKW === currentKW &&
+    (t.priority === undefined || (t.priority !== 'low' && t.priority !== 'blocked'))
+  )
   const sowNowVarieties = varieties.filter((v) =>
     isInKWRange(currentKW, v.sowIndoorsKW) || isInKWRange(currentKW, v.sowDirectKW)
   )
@@ -37,7 +40,7 @@ export default function Dashboard() {
       <WeatherWidget weather={weather} />
       {openTasks.length > 0 && (
         <div className="bg-white border border-slate-200 rounded-xl p-4">
-          <h3 className="font-semibold mb-3">Diese Woche ({openTasks.length} Aufgaben)</h3>
+          <h3 className="font-semibold mb-3">{openTasks.length} wichtige Aufgaben</h3>
           <div className="space-y-2">
             {openTasks.slice(0, 5).map((task) => (
               <div key={task.id} className="flex items-center justify-between p-2 bg-slate-50 rounded-lg">

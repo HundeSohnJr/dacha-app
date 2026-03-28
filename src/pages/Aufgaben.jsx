@@ -7,6 +7,16 @@ import { addDoc, collection } from 'firebase/firestore'
 import { db } from '../services/firebase'
 import { Plus } from 'lucide-react'
 
+const PRIORITY_ORDER = { high: 0, normal: 1, low: 2, blocked: 3 }
+
+function sortByPriority(tasks) {
+  return [...tasks].sort((a, b) => {
+    const pa = PRIORITY_ORDER[a.priority] ?? 1
+    const pb = PRIORITY_ORDER[b.priority] ?? 1
+    return pa - pb
+  })
+}
+
 export default function Aufgaben() {
   const { tasks, loading } = useGarden()
   const { householdId } = useAuth()
@@ -21,6 +31,10 @@ export default function Aufgaben() {
     if (filter === 'open') return !t.completed
     return t.assignedTo === filter
   })
+
+  // Split into active and blocked
+  const activeTasks = sortByPriority(filteredTasks.filter((t) => t.priority !== 'blocked'))
+  const blockedTasks = filteredTasks.filter((t) => t.priority === 'blocked')
 
   const addTask = async (e) => {
     e.preventDefault()
@@ -66,10 +80,18 @@ export default function Aufgaben() {
       <div>
         <h3 className="text-sm font-semibold text-slate-500 mb-2">KW {currentKW}</h3>
         <div className="space-y-2">
-          {filteredTasks.map((t) => <TaskItem key={t.id} task={t} />)}
-          {filteredTasks.length === 0 && <p className="text-slate-500 text-sm text-center py-4">Keine Aufgaben diese Woche</p>}
+          {activeTasks.map((t) => <TaskItem key={t.id} task={t} />)}
+          {activeTasks.length === 0 && blockedTasks.length === 0 && (
+            <p className="text-slate-500 text-sm text-center py-4">Keine Aufgaben diese Woche</p>
+          )}
         </div>
       </div>
+      {blockedTasks.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-slate-400 mb-2">Verschoben ({blockedTasks.length})</h3>
+          <div className="space-y-2">{blockedTasks.map((t) => <TaskItem key={t.id} task={t} />)}</div>
+        </div>
+      )}
     </div>
   )
 }
