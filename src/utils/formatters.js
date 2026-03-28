@@ -16,6 +16,7 @@ export const categoryLabels = {
   pea: 'Erbse', carrot: 'Möhre', beetroot: 'Rote Bete', radish: 'Radieschen',
   lettuce: 'Salat', kohlrabi: 'Kohlrabi', cauliflower: 'Blumenkohl', broccoli: 'Brokkoli',
   kale: 'Grünkohl', herb: 'Kräuter', flower: 'Blume', onion: 'Zwiebel', root: 'Wurzelgemüse',
+  corn: 'Mais',
 }
 
 export const taskTypeLabels = {
