@@ -3,9 +3,9 @@ import { Sun, CloudSun, Cloud } from 'lucide-react'
 import { isActivePlanting } from '../utils/plantingStatus'
 
 const sunIcons = {
-  full: <Sun className="w-3 h-3 text-yellow-500" />,
-  partial: <CloudSun className="w-3 h-3 text-amber-400" />,
-  shade: <Cloud className="w-3 h-3 text-slate-400" />,
+  full: <Sun className="w-3 h-3 text-yellow-500 flex-shrink-0" />,
+  partial: <CloudSun className="w-3 h-3 text-amber-400 flex-shrink-0" />,
+  shade: <Cloud className="w-3 h-3 text-slate-400 flex-shrink-0" />,
 }
 
 export default function BedCard({ bed, plantings, varieties, compact }) {
