@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useGarden } from '../context/GardenContext'
 import { useAuth } from '../context/AuthContext'
 import TaskItem from '../components/TaskItem'
+import TemplateBrowser from '../components/TemplateBrowser'
 import { getKW } from '../utils/kw'
 import { kategorieOrder } from '../utils/formatters'
 import { addDoc, collection } from 'firebase/firestore'
@@ -202,6 +203,8 @@ export default function Aufgaben() {
         <Plus className="w-4 h-4" />
         Weitere Aufgaben
       </button>
+
+      {showBrowser && <TemplateBrowser onClose={() => setShowBrowser(false)} />}
     </div>
   )
 }
