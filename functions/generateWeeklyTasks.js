@@ -1,17 +1,13 @@
 const { onSchedule } = require('firebase-functions/v2/scheduler')
 const admin = require('firebase-admin')
-const db = admin.firestore()
-
-function getKW(date = new Date()) {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7))
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
-  return Math.ceil(((d - yearStart) / 86400000 + 1) / 7)
-}
-
-function isInRange(kw, range) {
-  return range && kw >= range[0] && kw <= range[1]
-}
+const {
+  getKW,
+  isInRange,
+  checkWeatherCondition,
+  calcTemplatePriority,
+  buildTaskFromTemplate,
+  db,
+} = require('./taskUtils')
 
 function calcIdealKW(range, frostSensitive, isOutdoor) {
   if (!range) return null
@@ -32,6 +28,77 @@ function calcPriority(currentKW, idealKW, endKW, frostBlocked, weatherBoost) {
   if (endKW - currentKW <= 1) return { priority: 'high', priorityReason: 'Zeitkritisch' }
   if (currentKW >= idealKW) return { priority: 'normal', priorityReason: 'Ideal diese Woche' }
   return { priority: 'low', priorityReason: 'Optional — Fenster offen' }
+}
+
+async function generateTemplateTasks(householdId, kw, year, weather, batch) {
+  const SKIP_RECURRENCE = new Set(['täglich', 'täglich_bei_hitze', 'bei_bedarf'])
+
+  const templatesSnap = await db.collection('taskTemplates')
+    .where('householdId', '==', householdId)
+    .where('active', '==', true)
+    .get()
+
+  // Fetch all existing tasks for the full year (needed for einmalig / alle_2_wochen dedup)
+  const existingTasksSnap = await db.collection('tasks')
+    .where('householdId', '==', householdId)
+    .where('dueYear', '==', year)
+    .get()
+
+  let newCount = 0
+
+  for (const tDoc of templatesSnap.docs) {
+    const template = { id: tDoc.id, ...tDoc.data() }
+
+    // Only process templates whose KW window includes the current week
+    if (!isInRange(kw, [template.kwStart, template.kwEnd])) continue
+
+    // Skip daily / on-demand recurrence types
+    if (SKIP_RECURRENCE.has(template.recurrence)) continue
+
+    const templateIdField = `template-${template.id}`
+
+    // Deduplication
+    if (template.recurrence === 'einmalig') {
+      const alreadyExists = existingTasksSnap.docs.some(d => d.data().templateId === templateIdField)
+      if (alreadyExists) continue
+    } else if (template.recurrence === 'wöchentlich') {
+      const alreadyExists = existingTasksSnap.docs.some(d => {
+        const data = d.data()
+        return data.templateId === templateIdField && data.dueKW === kw && data.dueYear === year
+      })
+      if (alreadyExists) continue
+    } else if (template.recurrence === 'alle_2_wochen') {
+      const alreadyExists = existingTasksSnap.docs.some(d => {
+        const data = d.data()
+        return data.templateId === templateIdField && data.dueKW >= kw - 2 && data.dueKW <= kw
+      })
+      if (alreadyExists) continue
+    }
+
+    // Check weather condition
+    const { blocked, reason, skip } = checkWeatherCondition(template.weatherCondition, weather)
+    if (skip) continue
+
+    // Calculate priority
+    const { priority, priorityReason } = calcTemplatePriority(
+      template.priority,
+      kw,
+      template.kwEnd,
+      blocked
+    )
+
+    // Build task document
+    const taskDoc = buildTaskFromTemplate(template, kw, year, priority, priorityReason, blocked, reason)
+
+    batch.set(db.collection('tasks').doc(), {
+      ...taskDoc,
+      householdId,
+      assignedTo: null,
+    })
+    newCount++
+  }
+
+  return newCount
 }
 
 exports.generateWeeklyTasks = onSchedule(
@@ -74,6 +141,7 @@ exports.generateWeeklyTasks = onSchedule(
             title: `${v.name} vorziehen (Fensterbank)`,
             type: 'sow', priority, priorityReason,
             weatherBlocked: false, blockedReason: null,
+            kategorie: 'Aussaat & Pflanzung', templateId: null,
           })
         }
 
@@ -88,6 +156,7 @@ exports.generateWeeklyTasks = onSchedule(
             type: 'sow', priority, priorityReason,
             weatherBlocked: blocked,
             blockedReason: blocked ? `Frost erwartet (${Math.round(Math.min(...weather.forecast.slice(0,5).map(d=>d.minTemp)))}°C)` : null,
+            kategorie: 'Aussaat & Pflanzung', templateId: null,
           })
         }
 
@@ -101,6 +170,7 @@ exports.generateWeeklyTasks = onSchedule(
             type: 'transplant', priority, priorityReason,
             weatherBlocked: blocked,
             blockedReason: blocked ? 'Frost erwartet' : null,
+            kategorie: 'Aussaat & Pflanzung', templateId: null,
           })
         }
 
@@ -115,6 +185,10 @@ exports.generateWeeklyTasks = onSchedule(
           }
         }
       }
+
+      // Generate template-based maintenance tasks
+      const templateCount = await generateTemplateTasks(householdId, kw, year, weather, batch)
+      newCount += templateCount
 
       if (newCount > 0) {
         await batch.commit()
