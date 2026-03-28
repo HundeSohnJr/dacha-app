@@ -24,9 +24,9 @@ export default function Beete() {
         <div className="flex gap-3">
 
           {/* === LEFT COLUMN === */}
-          <div className="flex-1 flex flex-col gap-2">
+          <div className="flex-1 flex flex-col justify-between">
             {/* Haus */}
-            <div className="bg-slate-200 rounded-xl flex items-center justify-center text-slate-500 text-sm font-medium flex-1 min-h-[180px]">
+            <div className="bg-slate-200 rounded-xl flex items-center justify-center text-slate-500 text-sm font-medium min-h-[140px]">
               Haus
             </div>
 
