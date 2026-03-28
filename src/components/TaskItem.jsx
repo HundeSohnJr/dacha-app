@@ -2,7 +2,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../services/firebase'
 import { useAuth } from '../context/AuthContext'
 import { taskTypeLabels } from '../utils/formatters'
-import { CheckCircle2, Circle, Snowflake } from 'lucide-react'
+import { CheckCircle2, Circle, Snowflake, Clock } from 'lucide-react'
 
 function PriorityBadge({ priority, priorityReason }) {
   if (!priority || !priorityReason) return null
@@ -62,9 +62,16 @@ export default function TaskItem({ task }) {
         <div className={`text-sm font-medium ${task.completed || isBlocked ? 'line-through text-slate-400' : 'text-slate-800'}`}>
           {task.title}
         </div>
-        <div className="flex items-center gap-2 text-xs text-slate-500 flex-wrap">
+        {task.precondition && (
+          <div className="text-xs text-slate-400 mt-0.5">{task.precondition}</div>
+        )}
+        <div className="flex items-center gap-2 text-xs text-slate-500 flex-wrap mt-0.5">
           <span>{taskTypeLabels[task.type] || task.type}</span>
-          {task.assignedTo && <span>• {task.assignedTo}</span>}
+          {task.durationMinutes && (
+            <span className="inline-flex items-center gap-0.5 text-slate-400">
+              <Clock className="w-3 h-3" />~{task.durationMinutes} Min
+            </span>
+          )}
           <PriorityBadge priority={task.priority} priorityReason={task.priorityReason} />
         </div>
       </div>
