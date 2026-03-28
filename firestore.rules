@@ -40,6 +40,12 @@ service cloud.firestore {
       allow update, delete: if request.auth != null && resource.data.householdId == getHouseholdId();
     }
 
+    match /taskTemplates/{docId} {
+      allow read: if request.auth != null && resource.data.householdId == getHouseholdId();
+      allow create: if request.auth != null && request.resource.data.householdId == getHouseholdId();
+      allow update, delete: if request.auth != null && resource.data.householdId == getHouseholdId();
+    }
+
     match /harvests/{docId} {
       allow read: if request.auth != null && resource.data.householdId == getHouseholdId();
       allow create: if request.auth != null && request.resource.data.householdId == getHouseholdId();
