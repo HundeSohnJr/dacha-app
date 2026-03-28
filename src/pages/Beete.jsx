@@ -30,22 +30,20 @@ export default function Beete() {
               Haus
             </div>
 
-            {/* HB2 wide, HB1 below-left (upside-down L) */}
-            <div>
+            {/* HB1-4 as one tight block */}
+            <div className="space-y-1">
+              {/* HB2 wide, HB1 below-left (upside-down L) */}
               <Card name="HB2" />
-              <div className="grid grid-cols-2 gap-2 mt-1">
+              <div className="grid grid-cols-2 gap-2">
                 <Card name="HB1" />
                 <div />
               </div>
-            </div>
-
-            {/* HB4 top-right, HB3 wide below (mirrored L) */}
-            <div>
+              {/* HB4 top-right, HB3 wide below (mirrored L) */}
               <div className="grid grid-cols-2 gap-2">
                 <div />
                 <Card name="HB4" />
               </div>
-              <div className="mt-1"><Card name="HB3" /></div>
+              <Card name="HB3" />
             </div>
           </div>
 
