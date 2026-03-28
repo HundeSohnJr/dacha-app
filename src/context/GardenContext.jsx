@@ -11,10 +11,11 @@ export function GardenProvider({ children }) {
   const { data: plantings, loading: plantingsLoading } = useCollection('plantings', householdId)
   const { data: tasks, loading: tasksLoading } = useCollection('tasks', householdId)
   const { data: harvests, loading: harvestsLoading } = useCollection('harvests', householdId)
-  const loading = varietiesLoading || bedsLoading || plantingsLoading || tasksLoading || harvestsLoading
+  const { data: taskTemplates, loading: templatesLoading } = useCollection('taskTemplates', householdId)
+  const loading = varietiesLoading || bedsLoading || plantingsLoading || tasksLoading || harvestsLoading || templatesLoading
 
   return (
-    <GardenContext.Provider value={{ varieties, beds, plantings, tasks, harvests, loading }}>
+    <GardenContext.Provider value={{ varieties, beds, plantings, tasks, harvests, taskTemplates, loading }}>
       {children}
     </GardenContext.Provider>
   )
