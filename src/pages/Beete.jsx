@@ -30,7 +30,7 @@ export default function Beete() {
         }}>
 
           {/* Haus (left, rows 1-5) + Gewächshaus/Erdfläche/KB/HB (right) */}
-          <div style={{ gridColumn: '1 / 3', gridRow: '1 / 6' }} className="bg-slate-200 rounded-xl flex items-center justify-center text-slate-500 text-sm font-medium">
+          <div style={{ gridColumn: '1 / 3', gridRow: '1 / 9' }} className="bg-slate-200 rounded-xl flex items-center justify-center text-slate-500 text-sm font-medium">
             Haus
           </div>
           <Card name="Gewächshaus" style={{ gridColumn: '3 / 5', gridRow: '1' }} />
@@ -47,35 +47,41 @@ export default function Beete() {
           <Card name="HB11" style={{ gridColumn: '3', gridRow: '4' }} />
           <Card name="HB12" style={{ gridColumn: '4', gridRow: '4' }} />
 
-          {/* Rows 5-6: HB8+HB9 (upside-down L) | HB7+HB10 (mirrored L) */}
-          <div style={{ gridColumn: '3', gridRow: '5 / 7', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
+          {/* Spacer row 5 */}
+          <div style={{ gridColumn: '3 / 5', gridRow: '5', height: '16px' }} />
+
+          {/* Rows 6-7: HB8+HB9 (upside-down L) | HB7+HB10 (mirrored L) */}
+          <div style={{ gridColumn: '3', gridRow: '6 / 8', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
             <div style={{ gridColumn: '1 / 3' }}><Card name="HB9" /></div>
             <div style={{ gridColumn: '1' }}><Card name="HB8" /></div>
           </div>
-          <div style={{ gridColumn: '4', gridRow: '5 / 7', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
+          <div style={{ gridColumn: '4', gridRow: '6 / 8', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
             <div style={{ gridColumn: '1 / 3' }}><Card name="HB10" /></div>
             <div style={{ gridColumn: '2' }}><Card name="HB7" /></div>
           </div>
 
-          {/* Rows 7-8: HB1+HB2 (upside-down L on left) */}
-          <div style={{ gridColumn: '1 / 3', gridRow: '7 / 9', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
+          {/* Spacer row 8 */}
+          <div style={{ gridColumn: '3 / 5', gridRow: '8', height: '16px' }} />
+
+          {/* Rows 9-10: HB1+HB2 (upside-down L on left) */}
+          <div style={{ gridColumn: '1 / 3', gridRow: '9 / 11', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
             <div style={{ gridColumn: '1 / 3' }}><Card name="HB2" /></div>
             <div style={{ gridColumn: '1' }}><Card name="HB1" /></div>
           </div>
 
-          {/* Row 7: HB5+HB6 (right, same height as HB2) */}
-          <Card name="HB5" style={{ gridColumn: '3', gridRow: '7' }} />
-          <Card name="HB6" style={{ gridColumn: '4', gridRow: '7' }} />
+          {/* HB5+HB6 (right, rows 9-10) */}
+          <Card name="HB5" style={{ gridColumn: '3', gridRow: '9' }} />
+          <Card name="HB6" style={{ gridColumn: '4', gridRow: '9' }} />
 
-          {/* Rows 9-10: HB3+HB4 (mirrored L on left) */}
-          <div style={{ gridColumn: '1 / 3', gridRow: '9 / 11', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
-            <div style={{ gridColumn: '2' }}><Card name="HB4" /></div>
-            <div style={{ gridColumn: '1 / 3' }}><Card name="HB3" /></div>
-          </div>
-
-          {/* Thuja aligned with HB3 (row 10) */}
+          {/* Thuja at row 10 (level with HB1) */}
           <div style={{ gridColumn: '3 / 5', gridRow: '10' }} className="text-center text-xs text-slate-400 py-1">
             🌲 Thuja 🌲
+          </div>
+
+          {/* Rows 11-12: HB3+HB4 (mirrored L on left) */}
+          <div style={{ gridColumn: '1 / 3', gridRow: '11 / 13', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
+            <div style={{ gridColumn: '2' }}><Card name="HB4" /></div>
+            <div style={{ gridColumn: '1 / 3' }}><Card name="HB3" /></div>
           </div>
         </div>
 
