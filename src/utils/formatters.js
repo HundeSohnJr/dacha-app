@@ -22,4 +22,23 @@ export const categoryLabels = {
 export const taskTypeLabels = {
   sow: 'Aussaat', transplant: 'Auspflanzen', harvest: 'Ernten',
   water: 'Gießen', cover: 'Abdecken', custom: 'Sonstiges',
+  maintenance: 'Pflege',
 }
+
+export const kategorieOrder = [
+  'Aussaat & Pflanzung',
+  'Saisonstart',
+  'Boden',
+  'Bewässerung',
+  'Kompost',
+  'Pflanzenpflege',
+  'Ernte & Lagerung',
+  'Pflanzenschutz',
+  'Gewächshaus',
+  'Beeren & Obst',
+  'Blumen & Nützlinge',
+  'Infrastruktur',
+  'Werkzeug & Material',
+  'Planung & Doku',
+  'Wintervorbereitung',
+]
