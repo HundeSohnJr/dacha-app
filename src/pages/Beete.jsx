@@ -57,21 +57,25 @@ export default function Beete() {
             <div style={{ gridColumn: '2' }}><Card name="HB7" /></div>
           </div>
 
-          {/* Rows 6-7: HB1+HB2 (upside-down L on left) | HB5+HB6 (right) */}
-          <div style={{ gridColumn: '1 / 3', gridRow: '6 / 8', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
+          {/* Rows 7-8: HB1+HB2 (upside-down L on left) */}
+          <div style={{ gridColumn: '1 / 3', gridRow: '7 / 9', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
             <div style={{ gridColumn: '1 / 3' }}><Card name="HB2" /></div>
             <div style={{ gridColumn: '1' }}><Card name="HB1" /></div>
           </div>
+
+          {/* Row 7: HB5+HB6 (right, same height as HB2) */}
           <Card name="HB5" style={{ gridColumn: '3', gridRow: '7' }} />
           <Card name="HB6" style={{ gridColumn: '4', gridRow: '7' }} />
-          <div style={{ gridColumn: '3 / 5', gridRow: '8' }} className="text-center text-xs text-slate-400 py-1">
-            🌲 Thuja 🌲
-          </div>
 
-          {/* Rows 8-9: HB3+HB4 (mirrored L on left) */}
-          <div style={{ gridColumn: '1 / 3', gridRow: '8 / 10', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
+          {/* Rows 9-10: HB3+HB4 (mirrored L on left) */}
+          <div style={{ gridColumn: '1 / 3', gridRow: '9 / 11', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '4px' }}>
             <div style={{ gridColumn: '2' }}><Card name="HB4" /></div>
             <div style={{ gridColumn: '1 / 3' }}><Card name="HB3" /></div>
+          </div>
+
+          {/* Thuja aligned with HB3 (row 10) */}
+          <div style={{ gridColumn: '3 / 5', gridRow: '10' }} className="text-center text-xs text-slate-400 py-1">
+            🌲 Thuja 🌲
           </div>
         </div>
 
