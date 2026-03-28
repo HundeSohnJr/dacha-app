@@ -11,13 +11,13 @@ const tabs = [
 
 export default function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 pb-safe z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 pb-safe z-50">
       <div className="flex justify-around items-center h-16 max-w-lg mx-auto">
         {tabs.map(({ to, icon: Icon, label }) => (
           <NavLink key={to} to={to} end={to === '/'}
             className={({ isActive }) =>
               `flex flex-col items-center gap-1 px-3 py-2 text-xs transition-colors ${
-                isActive ? 'text-green-400' : 'text-slate-400 hover:text-slate-200'
+                isActive ? 'text-green-600' : 'text-slate-400 hover:text-slate-600'
               }`
             }>
             <Icon className="w-5 h-5" />

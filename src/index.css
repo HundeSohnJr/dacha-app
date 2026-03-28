@@ -1,13 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --color-dacha-green: #22c55e;
-  --color-dacha-dark: #0f172a;
-  --color-dacha-card: #1e293b;
+  --color-dacha-green: #16a34a;
 }
 
 body {
-  @apply bg-slate-900 text-white min-h-screen;
+  @apply bg-slate-50 text-slate-800 min-h-screen;
   font-family: system-ui, -apple-system, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }

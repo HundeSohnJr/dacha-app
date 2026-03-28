@@ -7,30 +7,19 @@
  *   node scripts/seed-firestore.js
  */
 
-const admin = require('firebase-admin')
-admin.initializeApp()
-const db = admin.firestore()
+import { initializeApp, cert } from 'firebase-admin/app'
+import { getFirestore } from 'firebase-admin/firestore'
+import { readFileSync } from 'fs'
+import { varieties, beds } from '../src/data/seed-data.js'
 
-// We need to use a dynamic import or require the compiled seed data
-// Since seed-data.js uses ES modules, we'll duplicate the data reference approach
-const path = require('path')
+const serviceAccount = JSON.parse(readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, 'utf8'))
+initializeApp({ credential: cert(serviceAccount) })
+const db = getFirestore()
 
 async function seed() {
   const householdId = process.env.HOUSEHOLD_ID
   if (!householdId) {
     console.error('Error: Set HOUSEHOLD_ID env var')
-    process.exit(1)
-  }
-
-  // Dynamic import for ESM seed data
-  let varieties, beds
-  try {
-    const seedData = await import(path.resolve(__dirname, '../src/data/seed-data.js'))
-    varieties = seedData.varieties
-    beds = seedData.beds
-  } catch (err) {
-    console.error('Failed to load seed data. Make sure src/data/seed-data.js exists.')
-    console.error(err.message)
     process.exit(1)
   }
 

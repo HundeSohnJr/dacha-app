@@ -3,7 +3,7 @@ import BedCard from '../components/BedCard'
 
 export default function Beete() {
   const { beds, plantings, loading } = useGarden()
-  if (loading) return <div className="grid grid-cols-2 gap-3">{[1,2,3,4].map(i => <div key={i} className="bg-slate-800 rounded-xl h-20 animate-pulse" />)}</div>
+  if (loading) return <div className="grid grid-cols-2 gap-3">{[1,2,3,4].map(i => <div key={i} className="bg-slate-200 rounded-xl h-20 animate-pulse" />)}</div>
 
   const greenhouse = beds.filter((b) => b.type === 'greenhouse')
   const ground = beds.filter((b) => b.type === 'ground')
@@ -12,7 +12,7 @@ export default function Beete() {
 
   const renderSection = (title, sectionBeds) => sectionBeds.length > 0 && (
     <div>
-      <h3 className="text-sm font-semibold text-slate-400 mb-2">{title}</h3>
+      <h3 className="text-sm font-semibold text-slate-600 mb-2">{title}</h3>
       <div className="grid grid-cols-2 gap-2">
         {sectionBeds.map((b) => <BedCard key={b.id} bed={b} plantings={plantings} />)}
       </div>

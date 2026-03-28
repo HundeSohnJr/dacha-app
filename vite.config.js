@@ -13,8 +13,8 @@ export default defineConfig({
         name: 'Dacha — Gartenplaner',
         short_name: 'Dacha',
         description: 'Smarter Gartenplaner für den Kleingarten',
-        theme_color: '#22c55e',
-        background_color: '#0f172a',
+        theme_color: '#16a34a',
+        background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
         icons: [

@@ -2,10 +2,8 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function isHouseholdMember(householdId) {
-      return request.auth != null
-        && exists(/databases/$(database)/documents/members/$(request.auth.uid))
-        && get(/databases/$(database)/documents/members/$(request.auth.uid)).data.householdId == householdId;
+    function getHouseholdId() {
+      return get(/databases/$(database)/documents/members/$(request.auth.uid)).data.householdId;
     }
 
     match /members/{userId} {
@@ -13,14 +11,44 @@ service cloud.firestore {
     }
 
     match /households/{householdId} {
-      allow read: if isHouseholdMember(householdId);
+      allow read: if request.auth != null
+        && exists(/databases/$(database)/documents/members/$(request.auth.uid))
+        && getHouseholdId() == householdId;
     }
 
-    match /{collection}/{docId} {
-      allow read, write: if collection in ['varieties', 'beds', 'plantings', 'tasks', 'harvests', 'alerts']
-        && isHouseholdMember(resource.data.householdId);
-      allow create: if collection in ['varieties', 'beds', 'plantings', 'tasks', 'harvests', 'alerts']
-        && isHouseholdMember(request.resource.data.householdId);
+    match /varieties/{docId} {
+      allow read: if request.auth != null && resource.data.householdId == getHouseholdId();
+      allow create: if request.auth != null && request.resource.data.householdId == getHouseholdId();
+      allow update, delete: if request.auth != null && resource.data.householdId == getHouseholdId();
+    }
+
+    match /beds/{docId} {
+      allow read: if request.auth != null && resource.data.householdId == getHouseholdId();
+      allow create: if request.auth != null && request.resource.data.householdId == getHouseholdId();
+      allow update, delete: if request.auth != null && resource.data.householdId == getHouseholdId();
+    }
+
+    match /plantings/{docId} {
+      allow read: if request.auth != null && resource.data.householdId == getHouseholdId();
+      allow create: if request.auth != null && request.resource.data.householdId == getHouseholdId();
+      allow update, delete: if request.auth != null && resource.data.householdId == getHouseholdId();
+    }
+
+    match /tasks/{docId} {
+      allow read: if request.auth != null && resource.data.householdId == getHouseholdId();
+      allow create: if request.auth != null && request.resource.data.householdId == getHouseholdId();
+      allow update, delete: if request.auth != null && resource.data.householdId == getHouseholdId();
+    }
+
+    match /harvests/{docId} {
+      allow read: if request.auth != null && resource.data.householdId == getHouseholdId();
+      allow create: if request.auth != null && request.resource.data.householdId == getHouseholdId();
+      allow update, delete: if request.auth != null && resource.data.householdId == getHouseholdId();
+    }
+
+    match /alerts/{docId} {
+      allow read: if request.auth != null && resource.data.householdId == getHouseholdId();
+      allow create: if request.auth != null && request.resource.data.householdId == getHouseholdId();
     }
 
     match /weather/{docId} {

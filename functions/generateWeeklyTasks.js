@@ -1,4 +1,4 @@
-const functions = require('firebase-functions')
+const { onSchedule } = require('firebase-functions/v2/scheduler')
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
@@ -13,9 +13,9 @@ function isInRange(kw, range) {
   return range && kw >= range[0] && kw <= range[1]
 }
 
-exports.generateWeeklyTasks = functions.pubsub
-  .schedule('every monday 06:00').timeZone('Europe/Berlin')
-  .onRun(async () => {
+exports.generateWeeklyTasks = onSchedule(
+  { schedule: 'every monday 06:00', timeZone: 'Europe/Berlin' },
+  async () => {
     const kw = getKW()
     const year = new Date().getFullYear()
     const households = await db.collection('households').get()
@@ -70,5 +70,5 @@ exports.generateWeeklyTasks = functions.pubsub
         }
       }
     }
-    return null
-  })
+  }
+)

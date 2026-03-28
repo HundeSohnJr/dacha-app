@@ -1,4 +1,4 @@
-const functions = require('firebase-functions')
+const { onSchedule } = require('firebase-functions/v2/scheduler')
 const admin = require('firebase-admin')
 const fetch = require('node-fetch')
 
@@ -16,9 +16,9 @@ async function fetchWeatherData(lat, lng) {
   return res.json()
 }
 
-exports.checkWeather = functions.pubsub
-  .schedule('every 6 hours').timeZone('Europe/Berlin')
-  .onRun(async () => {
+exports.checkWeather = onSchedule(
+  { schedule: 'every 6 hours', timeZone: 'Europe/Berlin' },
+  async () => {
     const households = await db.collection('households').get()
     for (const doc of households.docs) {
       const { location, frostThresholdC = 3 } = doc.data()
@@ -46,5 +46,5 @@ exports.checkWeather = functions.pubsub
         await pushFrostAlert(doc.id, coldest.minTemp)
       }
     }
-    return null
-  })
+  }
+)

@@ -8,14 +8,14 @@ export default function AlertBanner({ weather }) {
     alerts.push({
       type: 'frost', icon: <Snowflake className="w-5 h-5" />,
       message: `Frostalarm: ${coldestDay.minTemp}°C erwartet — Jungpflanzen abdecken!`,
-      color: 'bg-red-500/10 border-red-500 text-red-400',
+      color: 'bg-red-50 border-red-500 text-red-700',
     })
   }
   if (weather.rainExpected) {
     alerts.push({
       type: 'rain', icon: <Droplets className="w-5 h-5" />,
       message: 'Regen erwartet — nicht gießen heute',
-      color: 'bg-blue-500/10 border-blue-500 text-blue-400',
+      color: 'bg-blue-50 border-blue-500 text-blue-700',
     })
   }
   if (alerts.length === 0) return null

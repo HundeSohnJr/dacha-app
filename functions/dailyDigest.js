@@ -1,4 +1,4 @@
-const functions = require('firebase-functions')
+const { onSchedule } = require('firebase-functions/v2/scheduler')
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
@@ -10,9 +10,9 @@ function getKW() {
   return Math.ceil(((utc - yearStart) / 86400000 + 1) / 7)
 }
 
-exports.dailyDigest = functions.pubsub
-  .schedule('every day 07:00').timeZone('Europe/Berlin')
-  .onRun(async () => {
+exports.dailyDigest = onSchedule(
+  { schedule: 'every day 07:00', timeZone: 'Europe/Berlin' },
+  async () => {
     const kw = getKW()
     const households = await db.collection('households').get()
 
@@ -46,5 +46,5 @@ exports.dailyDigest = functions.pubsub
         })
       }
     }
-    return null
-  })
+  }
+)

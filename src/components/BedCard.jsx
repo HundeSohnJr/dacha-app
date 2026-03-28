@@ -12,12 +12,12 @@ export default function BedCard({ bed, plantings }) {
   const hasPlantings = activePlantings.length > 0
   return (
     <Link to={`/beete/${bed.id}`}
-      className={`block p-3 rounded-xl border transition-colors ${hasPlantings ? 'bg-green-500/5 border-green-500/20 hover:bg-green-500/10' : 'bg-slate-800 border-slate-700 hover:bg-slate-750'}`}>
+      className={`block p-3 rounded-xl border transition-colors ${hasPlantings ? 'bg-green-50 border-green-200 hover:bg-green-100' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
       <div className="flex items-center justify-between mb-1">
-        <span className="font-medium text-sm">{bed.name}</span>
+        <span className="font-medium text-sm text-slate-800">{bed.name}</span>
         {sunIcons[bed.sunExposure]}
       </div>
-      <div className="text-xs text-slate-400">
+      <div className="text-xs text-slate-500">
         {hasPlantings ? `${activePlantings.length} Pflanzung${activePlantings.length > 1 ? 'en' : ''}` : 'Leer'}
       </div>
     </Link>
