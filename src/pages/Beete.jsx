@@ -79,12 +79,12 @@ export default function Beete() {
                   <div />
                 </div>
               </div>
-              {/* Right: HB10 wide on top, HB7 below-right */}
+              {/* Right: HB7 wide on top, HB10 below-left */}
               <div>
-                <Card name="HB10" />
+                <Card name="HB7" />
                 <div className="grid grid-cols-2 gap-1 mt-1">
+                  <Card name="HB10" />
                   <div />
-                  <Card name="HB7" />
                 </div>
               </div>
             </div>
