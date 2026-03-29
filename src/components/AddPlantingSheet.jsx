@@ -40,23 +40,28 @@ export default function AddPlantingSheet({ bedId, bedPlantings, onClose }) {
   const save = async () => {
     if (!selectedVariety || saving) return
     setSaving(true)
-    await addDoc(collection(db, 'plantings'), {
-      varietyId: selectedVariety.id,
-      bedId,
-      year: new Date().getFullYear(),
-      status,
-      sownDate: null,
-      transplantDate: null,
-      firstHarvestDate: null,
-      notes: notes.trim() || null,
-      householdId,
-    })
-    onClose()
+    try {
+      await addDoc(collection(db, 'plantings'), {
+        varietyId: selectedVariety.id,
+        bedId,
+        year: new Date().getFullYear(),
+        status,
+        sownDate: null,
+        transplantDate: null,
+        firstHarvestDate: null,
+        notes: notes.trim() || null,
+        householdId,
+      })
+      onClose()
+    } catch (error) {
+      console.error('Fehler beim Speichern:', error)
+      setSaving(false)
+    }
   }
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
-      <div className="bg-white rounded-t-2xl w-full max-h-[85vh] overflow-y-auto p-4 space-y-4">
+      <div className="bg-white rounded-t-2xl w-full max-h-[85vh] overflow-y-auto p-4 pb-24 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-bold">Pflanzung hinzufügen</h3>
           <button onClick={onClose} className="p-1 text-slate-400 hover:text-slate-600">

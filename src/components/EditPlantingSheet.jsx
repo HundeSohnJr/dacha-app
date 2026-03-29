@@ -16,19 +16,29 @@ export default function EditPlantingSheet({ planting, varietyName, onClose }) {
   const save = async () => {
     if (saving) return
     setSaving(true)
-    await updateDoc(doc(db, 'plantings', planting.id), {
-      bedId,
-      status,
-      notes: notes.trim() || null,
-    })
-    onClose()
+    try {
+      await updateDoc(doc(db, 'plantings', planting.id), {
+        bedId,
+        status,
+        notes: notes.trim() || null,
+      })
+      onClose()
+    } catch (error) {
+      console.error('Fehler beim Speichern:', error)
+      setSaving(false)
+    }
   }
 
   const remove = async () => {
     if (saving) return
     setSaving(true)
-    await deleteDoc(doc(db, 'plantings', planting.id))
-    onClose()
+    try {
+      await deleteDoc(doc(db, 'plantings', planting.id))
+      onClose()
+    } catch (error) {
+      console.error('Fehler beim Löschen:', error)
+      setSaving(false)
+    }
   }
 
   const statuses = ['geplant', 'aktiv', 'fertig']
@@ -36,7 +46,7 @@ export default function EditPlantingSheet({ planting, varietyName, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
-      <div className="bg-white rounded-t-2xl w-full max-h-[80vh] overflow-y-auto p-4 space-y-4">
+      <div className="bg-white rounded-t-2xl w-full max-h-[80vh] overflow-y-auto p-4 pb-24 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-bold">{varietyName}</h3>
           <button onClick={onClose} className="p-1 text-slate-400 hover:text-slate-600">
