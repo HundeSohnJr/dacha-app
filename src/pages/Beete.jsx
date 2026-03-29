@@ -51,9 +51,7 @@ export default function Beete() {
           <div className="flex-[1.3] flex flex-col justify-between gap-2">
             <Card name="Gewächshaus" />
 
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-2 text-center text-xs text-amber-700">
-              Erdfläche (8m²)
-            </div>
+            <Card name="Grundbeet" />
 
             <div className="grid grid-cols-3 gap-1">
               <Card name="KB13" />
