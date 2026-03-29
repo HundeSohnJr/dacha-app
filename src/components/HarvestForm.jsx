@@ -12,7 +12,7 @@ export default function HarvestForm({ onClose }) {
   const [unit, setUnit] = useState('kg')
   const [quality, setQuality] = useState('good')
   const activePlantings = plantings.filter((p) => p.status !== 'done')
-  const getVarietyName = (vid) => varieties.find((v) => v.id === vid)?.name || '—'
+  const getPlantingName = (p) => p.customName || varieties.find((v) => v.id === p.varietyId)?.name || '—'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -28,7 +28,7 @@ export default function HarvestForm({ onClose }) {
       <select value={plantingId} onChange={(e) => setPlantingId(e.target.value)} required
         className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm">
         <option value="">Pflanzung wählen...</option>
-        {activePlantings.map((p) => <option key={p.id} value={p.id}>{getVarietyName(p.varietyId)}</option>)}
+        {activePlantings.map((p) => <option key={p.id} value={p.id}>{getPlantingName(p)}</option>)}
       </select>
       <div className="flex gap-2">
         <input type="number" step="0.1" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="Menge" required

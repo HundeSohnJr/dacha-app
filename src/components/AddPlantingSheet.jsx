@@ -29,6 +29,8 @@ export default function AddPlantingSheet({ bedId, bedPlantings, onClose }) {
   const { varieties } = useGarden()
   const { householdId } = useAuth()
   const [selectedVariety, setSelectedVariety] = useState(null)
+  const [freeMode, setFreeMode] = useState(false)
+  const [customName, setCustomName] = useState('')
   const [status, setStatus] = useState('aktiv')
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
@@ -37,12 +39,13 @@ export default function AddPlantingSheet({ bedId, bedPlantings, onClose }) {
     ? getCompanionWarnings(selectedVariety, bedPlantings, varieties)
     : []
 
+  const canSave = freeMode ? customName.trim().length > 0 : !!selectedVariety
+
   const save = async () => {
-    if (!selectedVariety || saving) return
+    if (!canSave || saving) return
     setSaving(true)
     try {
-      await addDoc(collection(db, 'plantings'), {
-        varietyId: selectedVariety.id,
+      const plantingData = {
         bedId,
         year: new Date().getFullYear(),
         status,
@@ -51,7 +54,14 @@ export default function AddPlantingSheet({ bedId, bedPlantings, onClose }) {
         firstHarvestDate: null,
         notes: notes.trim() || null,
         householdId,
-      })
+      }
+      if (freeMode) {
+        plantingData.varietyId = null
+        plantingData.customName = customName.trim()
+      } else {
+        plantingData.varietyId = selectedVariety.id
+      }
+      await addDoc(collection(db, 'plantings'), plantingData)
       onClose()
     } catch (error) {
       console.error('Fehler beim Speichern:', error)
@@ -69,16 +79,46 @@ export default function AddPlantingSheet({ bedId, bedPlantings, onClose }) {
           </button>
         </div>
 
-        {!selectedVariety ? (
-          <VarietyPicker varieties={varieties} onSelect={setSelectedVariety} />
+        {!selectedVariety && !freeMode ? (
+          <div className="space-y-3">
+            <VarietyPicker varieties={varieties} onSelect={setSelectedVariety} />
+            <button
+              onClick={() => setFreeMode(true)}
+              className="w-full text-sm text-slate-500 hover:text-green-700 py-2"
+            >
+              Oder: Freie Pflanzung anlegen
+            </button>
+          </div>
         ) : (
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-green-50 rounded-xl">
-              <span className="text-sm font-medium text-green-800">{selectedVariety.name}</span>
-              <button onClick={() => setSelectedVariety(null)} className="text-xs text-green-600 underline">
-                Ändern
-              </button>
-            </div>
+            {freeMode ? (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium text-slate-700">Pflanzenname</label>
+                  <button
+                    onClick={() => { setFreeMode(false); setCustomName('') }}
+                    className="text-xs text-green-600 underline"
+                  >
+                    Sorte wählen
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={customName}
+                  onChange={(e) => setCustomName(e.target.value)}
+                  placeholder="z.B. Erdbeeren, Rhabarber, Liebstöckel..."
+                  autoFocus
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:border-green-500 focus:outline-none"
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-between p-3 bg-green-50 rounded-xl">
+                <span className="text-sm font-medium text-green-800">{selectedVariety.name}</span>
+                <button onClick={() => setSelectedVariety(null)} className="text-xs text-green-600 underline">
+                  Ändern
+                </button>
+              </div>
+            )}
 
             {warnings.length > 0 && (
               <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-1">
@@ -121,7 +161,7 @@ export default function AddPlantingSheet({ bedId, bedPlantings, onClose }) {
 
             <button
               onClick={save}
-              disabled={saving}
+              disabled={saving || !canSave}
               className="w-full py-3 bg-green-600 text-white rounded-xl font-medium text-sm hover:bg-green-700 disabled:opacity-50"
             >
               {saving ? 'Speichern...' : 'Pflanzung speichern'}

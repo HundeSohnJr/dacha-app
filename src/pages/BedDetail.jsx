@@ -26,7 +26,8 @@ export default function BedDetail() {
     return planting?.bedId === bedId && !t.completed
   })
 
-  const getVarietyName = (varietyId) => varieties.find((v) => v.id === varietyId)?.name || '—'
+  const getPlantingName = (planting) =>
+    planting.customName || varieties.find((v) => v.id === planting.varietyId)?.name || '—'
   const sunLabels = { full: 'Volle Sonne', partial: 'Halbschatten', shade: 'Schatten' }
   const sunEmoji = { full: '☀️', partial: '⛅', shade: '☁️' }
 
@@ -73,7 +74,7 @@ export default function BedDetail() {
               <PlantingCard
                 key={p.id}
                 planting={p}
-                varietyName={getVarietyName(p.varietyId)}
+                varietyName={getPlantingName(p)}
                 onTap={setEditPlanting}
               />
             ))}
@@ -109,7 +110,7 @@ export default function BedDetail() {
                   <div className="space-y-1">
                     {ps.map((p) => (
                       <div key={p.id} className="text-sm text-slate-500 px-2 py-1">
-                        {getVarietyName(p.varietyId)}
+                        {getPlantingName(p)}
                       </div>
                     ))}
                   </div>
@@ -130,7 +131,7 @@ export default function BedDetail() {
       {editPlanting && (
         <EditPlantingSheet
           planting={editPlanting}
-          varietyName={getVarietyName(editPlanting.varietyId)}
+          varietyName={getPlantingName(editPlanting)}
           onClose={() => setEditPlanting(null)}
         />
       )}

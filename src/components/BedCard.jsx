@@ -15,7 +15,7 @@ export default function BedCard({ bed, plantings, varieties, compact }) {
   let preview = ''
   if (hasPlantings && varieties) {
     const names = activePlantings
-      .map((p) => varieties.find((v) => v.id === p.varietyId)?.name)
+      .map((p) => p.customName || varieties.find((v) => v.id === p.varietyId)?.name)
       .filter(Boolean)
     const show = compact ? 2 : 3
     if (names.length <= show) {

@@ -7,10 +7,10 @@ import { Plus } from 'lucide-react'
 export default function ErnteLog() {
   const { harvests, varieties, plantings, loading } = useGarden()
   const [showForm, setShowForm] = useState(false)
-  const getVarietyName = (plantingId) => {
+  const getPlantingName = (plantingId) => {
     const planting = plantings.find((p) => p.id === plantingId)
     if (!planting) return '—'
-    return varieties.find((v) => v.id === planting.varietyId)?.name || '—'
+    return planting.customName || varieties.find((v) => v.id === planting.varietyId)?.name || '—'
   }
   const sortedHarvests = [...harvests].sort((a, b) => {
     const dateA = a.date?.toDate?.() ?? new Date(a.date)
@@ -31,7 +31,7 @@ export default function ErnteLog() {
         {sortedHarvests.map((h) => (
           <div key={h.id} className="flex items-center justify-between p-3 bg-white border border-slate-200 rounded-xl">
             <div>
-              <div className="text-sm font-medium">{getVarietyName(h.plantingId)}</div>
+              <div className="text-sm font-medium">{getPlantingName(h.plantingId)}</div>
               <div className="text-xs text-slate-500">{formatDate(h.date)}</div>
             </div>
             <div className="text-right">
