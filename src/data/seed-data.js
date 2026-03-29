@@ -1924,7 +1924,7 @@ export const varieties = [
   {
     name: 'Kartoffel Heiderot',
     category: 'potato',
-    type: 'Mittelfrüh, vorwiegend festkochend',
+    type: 'Mittelspät, festkochend',
     sowIndoorsKW: null,
     sowDirectKW: [15, 18],
     transplantKW: null,
@@ -1936,7 +1936,7 @@ export const varieties = [
     succession: false,
     successionIntervalWeeks: null,
     selfSeeding: false,
-    notes: 'Rote Schale, gelbes Fleisch. Vorwiegend festkochend. Dekorative Sorte, guter Geschmack. 35 cm Abstand, 65 cm Reihe. 5 Stück (Kiepenkerl/Caipi).',
+    notes: 'Mittelspät, festkochend. Rote Schale UND rotes Fleisch — Farbe bleibt beim Kochen. Buttrig-aromatisch. Nematodenresistent. Bioverita-Sorte. 35 cm Abstand, 70 cm Reihe. 5 Stück (Kiepenkerl Profi-Line/Caipi).',
   },
   {
     name: 'Kartoffel Quartett Spezialitäten',
@@ -1953,7 +1953,7 @@ export const varieties = [
     succession: false,
     successionIntervalWeeks: null,
     selfSeeding: false,
-    notes: 'Kiepenkerl Mischung aus 4 Spezialitäten-Sorten (je 3 Stück, 12 total). Verschiedene Farben und Kochtypen. 35 cm Abstand, 65 cm Reihe. Caipi.',
+    notes: 'Kiepenkerl Mix: Bernina (festkochend, tiefgelb), Laura (vorw. festkochend, rote Schale), Ratte (festkochend, hornförmig, nussig), Blue Congo (mehligkochend, violett). Je 3 Stück, 12 total. 35 cm Abstand, 70 cm Reihe. Caipi.',
   },
 ]
 
